@@ -1,0 +1,12 @@
+[submodule "futex"]
+	path = futex
+	url = https://github.com/shayanhabibi/futex
+	branch = master
+[submodule "ulock"]
+	path = ulock
+	url = https://github.com/shayanhabibi/ulock
+	branch = master
+[submodule "waitonaddress"]
+	path = waitonaddress
+	url = https://github.com/shayanhabibi/waitonaddress
+	branch = master
