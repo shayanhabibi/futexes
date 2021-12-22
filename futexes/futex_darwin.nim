@@ -1,7 +1,7 @@
 import ulock
 
-proc wait*[T](monitor: ptr T; compare: T; time: static int = 0): bool {.inline, discardable.} =
-  when time == 0:
+proc wait*[T](monitor: ptr T; compare: T; time: int = 0): bool {.inline, discardable.} =
+  if time == 0:
     ulock_wait(UL_COMPARE_AND_WAIT, monitor, cast[uint64](compare), high(uint32).uint32) >= 0
   else:
     ulock_wait(UL_COMPARE_AND_WAIT, monitor, cast[uint64](compare), (time * 1000).uint32) >= 0

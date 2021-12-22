@@ -1,13 +1,13 @@
 import std/posix
 import futex
 
-proc wait*[T](monitor: ptr T, compare: T; time: static int = 0): bool {.inline, discardable.} =
+proc wait*[T](monitor: ptr T, compare: T; time: int = 0): bool {.inline, discardable.} =
   ## Suspend a thread if the value of the futex is the same as refVal.
   
   # Returns 0 in case of a successful suspend
   # If value are different, it returns EWOULDBLOCK
   # We discard as this is not needed and simplifies compat with Windows futex
-  when time == 0:
+  if time == 0:
     result = not(sysFutex(monitor, futex.WaitPrivate, cast[cint](compare)) != 0.cint)
   else:
     var timeout: posix.TimeSpec

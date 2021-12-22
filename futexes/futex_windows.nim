@@ -1,10 +1,11 @@
 import waitonaddress
 
-proc wait*[T](monitor: ptr T; compare: T; time: static int = 0): bool {.inline, discardable.} =
-  when time == 0:
-    const t = INFINITE
+proc wait*[T](monitor: ptr T; compare: T; time: int = 0): bool {.inline, discardable.} =
+  var t: int32
+  if time == 0:
+    t = INFINITE
   else:
-    const t = time
+    t = time.int32
   result = waitOnAddress(monitor, compare.unsafeAddr, sizeof(T).int32, t)
   # If false, can get last error and check if its ERROR_TIMEOUT to make sure
   # it's not some other issue
