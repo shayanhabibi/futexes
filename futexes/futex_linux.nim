@@ -8,12 +8,12 @@ proc wait*[T](monitor: ptr T, compare: T; time: static int = 0): bool {.inline, 
   # If value are different, it returns EWOULDBLOCK
   # We discard as this is not needed and simplifies compat with Windows futex
   when time == 0:
-    result = not(sysFutex(monitor, FutexWaitPrivate, cast[cint](compare)) != 0.cint)
+    result = not(sysFutex(monitor, futex.WaitPrivate, cast[cint](compare)) != 0.cint)
   else:
     var timeout: posix.TimeSpec
     timeout.tv_sec = posix.Time(time div 1_000)
     timeout.tv_nsec = (time mod 1_000) * 1_000 * 1_000
-    result = not(sysFutex(monitor, FutexWaitPrivate, cast[cint](compare), timeout = timeout.addr) != 0.cint)
+    result = not(sysFutex(monitor, futex.WaitPrivate, cast[cint](compare), timeout = timeout.addr) != 0.cint)
 
 proc wake*(monitor: pointer) {.inline.} =
   ## Wake one thread (from the same process)
@@ -21,7 +21,7 @@ proc wake*(monitor: pointer) {.inline.} =
   # Returns the number of actually woken threads
   # or a Posix error code (if negative)
   # We discard as this is not needed and simplifies compat with Windows futex
-  discard sysFutex(monitor, FutexWakePrivate, 1)
+  discard sysFutex(monitor, futex.WakePrivate, 1)
 
 proc wakeAll*(monitor: pointer) {.inline.} =
-  discard sysFutex(monitor, FutexWakePrivate, high(cint))
+  discard sysFutex(monitor, futex.WakePrivate, high(cint))

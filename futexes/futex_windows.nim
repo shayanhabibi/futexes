@@ -6,6 +6,8 @@ proc wait*[T](monitor: ptr T; compare: T; time: static int = 0): bool {.inline, 
   else:
     const t = time
   result = waitOnAddress(monitor, compare.unsafeAddr, sizeof(T).int32, t)
+  # If false, can get last error and check if its ERROR_TIMEOUT to make sure
+  # it's not some other issue
     
 
 proc wake*(monitor: pointer) {.inline.} =
