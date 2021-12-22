@@ -1,3 +1,4 @@
+import std/posix
 import futex
 
 proc wait*[T](monitor: ptr T, compare: T; time: static int = 0): bool {.inline, discardable.} =
