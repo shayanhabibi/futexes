@@ -1,4 +1,4 @@
-version = "0.0.1"
+version = "0.0.2"
 author = "Shayan Habibi"
 description = "High level wrapper for platform independent futexes"
 license = "MIT"
